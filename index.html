@@ -1,26 +1,165 @@
 ﻿<!DOCTYPE html>
-<html lang='id'>
+<html lang="id">
 <head>
-    <meta charset='UTF-8'>
-    <title>WebGIS Kabupaten Pekalongan</title>
-    <link rel='stylesheet' href='assets/css/style.css'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebGIS Kabupaten Pekalongan - Analisis Kependudukan & Pendidikan</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class='container'>
-        <header>
-            <h1>Sistem Informasi Geografis Kabupaten Pekalongan</h1>
-            <p>Analisis Kependudukan dan Pendidikan</p>
-        </header>
 
-        <section class='map-container'>
-            <iframe src='Peta/index.html' title='Peta WebGIS'></iframe>
-        </section>
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="logo">🗺️ SIG Pekalongan</div>
+        <nav>
+            <a href="#beranda" class="active">Beranda</a>
+            <a href="#peta">Peta Spasial</a>
+            <a href="#dashboard">Dashboard</a>
+            <a href="#data">Data Tabel</a>
+            <a href="#tentang">Tentang Saya</a>
+        </nav>
+    </header>
 
-        <section class='chart-container'>
-            <canvas id='myChart'></canvas>
-        </section>
-    </div>
-    <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
-    <script src='assets/js/app.js'></script>
+    <!-- HERO SECTION -->
+    <section id="beranda" class="hero">
+        <h1>Sistem Informasi Geografis Kabupaten Pekalongan</h1>
+        <p class="subtitle">Platform WebGIS Interaktif untuk Analisis Kepadatan Penduduk dan Persebaran Siswa SMP di 19 Kecamatan Berbasis Data BPS 2024 & QGIS.</p>
+        
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="number" id="stat-kecamatan">0</div>
+                <div class="label">Kecamatan</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="stat-murid">0</div>
+                <div class="label">Total Siswa SMP</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="stat-kepadatan">0</div>
+                <div class="label">Rata² Kepadatan (jiwa/km²)</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PETA SPASIAL SECTION -->
+    <section id="peta" class="section">
+        <h2 class="section-title"><span class="icon">📍</span> Peta Tematik Interaktif</h2>
+        <p class="section-desc">Peta choropleth wilayah Kabupaten Pekalongan yang diekspor dari QGIS. Menampilkan lapisan batas kecamatan, kepadatan penduduk, dan jumlah murid.</p>
+        
+        <div class="card">
+            <div class="map-wrapper">
+                <iframe src="Peta/index.html" title="Peta WebGIS Kabupaten Pekalongan"></iframe>
+            </div>
+            <div class="map-note">
+                💡 <strong>Petunjuk:</strong> Anda dapat melakukan *zoom in/out*, menggeser peta (*pan*), dan mengklik poligon wilayah kecamatan untuk melihat atribut detail (data penduduk dan jumlah murid SMP).
+            </div>
+        </div>
+    </section>
+
+    <!-- DASHBOARD SECTION -->
+    <section id="dashboard" class="section">
+        <h2 class="section-title"><span class="icon">📊</span> Dashboard Statistik & Analisis</h2>
+        <p class="section-desc">Visualisasi komparatif antara tingkat kepadatan penduduk dan jumlah siswa SMP di setiap kecamatan.</p>
+
+        <!-- Highlight Cards -->
+        <div id="highlight-container" class="highlight-row">
+            <!-- Diisi oleh JS -->
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <h3 style="color:#ffffff; margin-bottom:15px; font-size:1rem;">Komparasi Kepadatan Penduduk vs Siswa SMP</h3>
+                <div class="chart-box">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <h3 style="color:#ffffff; margin-bottom:15px; font-size:1rem;">Klasifikasi Kepadatan Wilayah</h3>
+                <div class="chart-box">
+                    <canvas id="doughnutChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DATA TABEL SECTION -->
+    <section id="data" class="section">
+        <h2 class="section-title"><span class="icon">📋</span> Tabel Data Penelitian</h2>
+        <p class="section-desc">Data lengkap per kecamatan di Kabupaten Pekalongan. Gunakan kolom pencarian untuk menyaring wilayah tertentu.</p>
+        
+        <div class="card">
+            <div style="margin-bottom: 15px; display: flex; justify-content: flex-end;">
+                <input type="text" id="tableSearch" placeholder="🔍 Cari kecamatan atau zona..." style="background: #1a1a30; border: 1px solid #2a2a45; color: #ffffff; padding: 8px 14px; border-radius: 6px; width: 260px; font-size: 0.85rem;">
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Kecamatan</th>
+                            <th>Kepadatan (jiwa/km²)</th>
+                            <th>Jumlah Siswa</th>
+                            <th>Status Kepadatan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Diisi oleh JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- TENTANG SAYA SECTION -->
+    <section id="tentang" class="section">
+        <h2 class="section-title"><span class="icon">👨‍💻</span> Tentang Pengembang</h2>
+        <p class="section-desc">Informasi mengenai pembuat dan pengembang platform Sistem Informasi Geografis ini.</p>
+        
+        <div class="about-grid">
+            <div class="about-card">
+                <h3>Profil Akademik</h3>
+                <div class="profile-info">
+                    <div class="info-row">
+                        <span class="info-label">Nama Lengkap</span>
+                        <span class="info-value">Muhamad Luthfi Abdullah</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Program Studi</span>
+                        <span class="info-value">Informatika</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Perguruan Tinggi</span>
+                        <span class="info-value">Universitas PGRI Semarang</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Asal Daerah</span>
+                        <span class="info-value">Desa Sumublor, Sragi, Pekalongan</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-card">
+                <h3>Teknologi & Metodologi</h3>
+                <p>Website ini dibangun menggunakan pendekatan <em>Client-Side Rendering</em> murni yang mengintegrasikan pengolahan spasial desktop dengan web modern:</p>
+                <ul>
+                    <li><strong>QGIS 2.18.18 & qgis2web:</strong> Pengolahan data shp dan ekspor Web Map (OpenLayers).</li>
+                    <li><strong>HTML5, CSS3, JavaScript (ES6):</strong> Struktur antarmuka responsif dengan tema <em>Dark Academic</em>.</li>
+                    <li><strong>Chart.js:</strong> Visualisasi grafik statistik interaktif (Bar & Doughnut).</li>
+                    <li><strong>Data BPS 2024:</strong> Basis data kependudukan dan pendidikan Kabupaten Pekalongan.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2024 Muhamad Luthfi Abdullah — Sistem Informasi Geografis Kabupaten Pekalongan.</p>
+        <p style="margin-top: 5px;"><a href="https://github.com/Luthfi1006/WEB_GIS" target="_blank">GitHub Repository</a> | Dibuat dengan penuh dedikasi untuk akademis.</p>
+    </footer>
+
+    <!-- Main JS -->
+    <script src="assets/js/app.js"></script>
 </body>
 </html>
