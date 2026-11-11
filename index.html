@@ -3,163 +3,330 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebGIS Kabupaten Pekalongan - Analisis Kependudukan & Pendidikan</title>
+    <title>WebGIS Kabupaten Pekalongan | Analisis Spasial Kependudukan & Pendidikan SLTP</title>
     <link rel="stylesheet" href="assets/css/style.css">
-    <!-- Chart.js -->
+    <!-- Font Awesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-    <!-- NAVBAR -->
-    <header class="navbar">
-        <div class="logo">🗺️ SIG Pekalongan</div>
-        <nav>
-            <a href="#beranda" class="active">Beranda</a>
-            <a href="#peta">Peta Spasial</a>
-            <a href="#dashboard">Dashboard</a>
-            <a href="#data">Data Tabel</a>
-            <a href="#tentang">Tentang Saya</a>
+    <!-- ===== TOP BAR & NAVIGATION ===== -->
+    <div class="header-wrapper">
+        <nav class="navbar">
+            <a href="#beranda" class="brand">
+                <div class="brand-icon-box"><i class="fa-solid fa-earth-asia"></i></div>
+                <div class="brand-info">
+                    <h1>SIG Pekalongan</h1>
+                    <span>WebGIS Akademik Interaktif</span>
+                </div>
+            </a>
+            <div class="nav-menu">
+                <a href="#beranda" class="nav-link active"><i class="fa-solid fa-house"></i> Beranda</a>
+                <a href="#pendahuluan" class="nav-link"><i class="fa-solid fa-book-open"></i> Pendahuluan</a>
+                <div class="nav-divider"></div>
+                <a href="#peta" class="nav-link"><i class="fa-solid fa-map-location-dot"></i> Peta</a>
+                <a href="#dashboard" class="nav-link"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+                <a href="#tabel" class="nav-link"><i class="fa-solid fa-table-list"></i> Data</a>
+                <div class="nav-divider"></div>
+                <a href="#pengembang" class="nav-link"><i class="fa-solid fa-id-badge"></i> Pengembang</a>
+            </div>
         </nav>
-    </header>
+    </div>
 
-    <!-- HERO SECTION -->
-    <section id="beranda" class="hero">
-        <h1>Sistem Informasi Geografis Kabupaten Pekalongan</h1>
-        <p class="subtitle">Platform WebGIS Interaktif untuk Analisis Kepadatan Penduduk dan Persebaran Siswa SMP di 19 Kecamatan Berbasis Data BPS 2024 & QGIS.</p>
-        
-        <div class="stats-row">
-            <div class="stat-card">
-                <div class="number" id="stat-kecamatan">0</div>
-                <div class="label">Kecamatan</div>
-            </div>
-            <div class="stat-card">
-                <div class="number" id="stat-murid">0</div>
-                <div class="label">Total Siswa SMP</div>
-            </div>
-            <div class="stat-card">
-                <div class="number" id="stat-kepadatan">0</div>
-                <div class="label">Rata² Kepadatan (jiwa/km²)</div>
-            </div>
-        </div>
-    </section>
+    <div class="container">
 
-    <!-- PETA SPASIAL SECTION -->
-    <section id="peta" class="section">
-        <h2 class="section-title"><span class="icon">📍</span> Peta Tematik Interaktif</h2>
-        <p class="section-desc">Peta choropleth wilayah Kabupaten Pekalongan yang diekspor dari QGIS. Menampilkan lapisan batas kecamatan, kepadatan penduduk, dan jumlah murid.</p>
-        
-        <div class="card">
-            <div class="map-wrapper">
-                <iframe src="Peta/index.html" title="Peta WebGIS Kabupaten Pekalongan"></iframe>
+        <!-- ===== HERO SECTION ===== -->
+        <header id="beranda" class="hero">
+            <div class="hero-pill-badge">
+                <span class="dot"></span>
+                Portal Riset Geospasial — QGIS 2.18 & BPS 2024
             </div>
-            <div class="map-note">
-                💡 <strong>Petunjuk:</strong> Anda dapat melakukan *zoom in/out*, menggeser peta (*pan*), dan mengklik poligon wilayah kecamatan untuk melihat atribut detail (data penduduk dan jumlah murid SMP).
+            <h2 class="hero-title">Analisis Spasial Kepadatan Penduduk dan Jumlah Murid SLTP per Kecamatan di Kabupaten Pekalongan</h2>
+            <p class="hero-subtitle">Platform Sistem Informasi Geografis (SIG) interaktif modern untuk visualisasi disparitas kependudukan dan persebaran peserta didik SLTP di 19 kecamatan Kabupaten Pekalongan, Jawa Tengah.</p>
+
+            <div class="hero-cta-group">
+                <a href="#peta" class="btn btn-primary"><i class="fa-solid fa-map-location-dot"></i> Eksplorasi Peta Interaktif</a>
+                <a href="#dashboard" class="btn btn-secondary"><i class="fa-solid fa-chart-column"></i> Lihat Dashboard Statistik</a>
             </div>
-        </div>
-    </section>
 
-    <!-- DASHBOARD SECTION -->
-    <section id="dashboard" class="section">
-        <h2 class="section-title"><span class="icon">📊</span> Dashboard Statistik & Analisis</h2>
-        <p class="section-desc">Visualisasi komparatif antara tingkat kepadatan penduduk dan jumlah siswa SMP di setiap kecamatan.</p>
-
-        <!-- Highlight Cards -->
-        <div id="highlight-container" class="highlight-row">
-            <!-- Diisi oleh JS -->
-        </div>
-
-        <div class="dashboard-grid">
-            <div class="card">
-                <h3 style="color:#ffffff; margin-bottom:15px; font-size:1rem;">Komparasi Kepadatan Penduduk vs Siswa SMP</h3>
-                <div class="chart-box">
-                    <canvas id="barChart"></canvas>
+            <!-- STATS GRID -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-icon green"><i class="fa-solid fa-layer-group"></i></div>
+                        <div class="stat-tag">Wilayah</div>
+                    </div>
+                    <div class="stat-number" id="stat-kecamatan">19</div>
+                    <div class="stat-label">Kecamatan Administratif</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-icon blue"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <div class="stat-tag">Pendidikan</div>
+                    </div>
+                    <div class="stat-number" id="stat-murid">31.931</div>
+                    <div class="stat-label">Peserta Didik SLTP (2024)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-icon rose"><i class="fa-solid fa-users"></i></div>
+                        <div class="stat-tag">Demografi</div>
+                    </div>
+                    <div class="stat-number" id="stat-kepadatan">2.016</div>
+                    <div class="stat-label">Rata² Kepadatan (jiwa/km²)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-icon amber"><i class="fa-solid fa-building-columns"></i></div>
+                        <div class="stat-tag">Pusat</div>
+                    </div>
+                    <div class="stat-number">Kajen</div>
+                    <div class="stat-label">Ibukota Kabupaten</div>
                 </div>
             </div>
-            <div class="card">
-                <h3 style="color:#ffffff; margin-bottom:15px; font-size:1rem;">Klasifikasi Kepadatan Wilayah</h3>
-                <div class="chart-box">
-                    <canvas id="doughnutChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </section>
+        </header>
 
-    <!-- DATA TABEL SECTION -->
-    <section id="data" class="section">
-        <h2 class="section-title"><span class="icon">📋</span> Tabel Data Penelitian</h2>
-        <p class="section-desc">Data lengkap per kecamatan di Kabupaten Pekalongan. Gunakan kolom pencarian untuk menyaring wilayah tertentu.</p>
-        
-        <div class="card">
-            <div style="margin-bottom: 15px; display: flex; justify-content: flex-end;">
-                <input type="text" id="tableSearch" placeholder="🔍 Cari kecamatan atau zona..." style="background: #1a1a30; border: 1px solid #2a2a45; color: #ffffff; padding: 8px 14px; border-radius: 6px; width: 260px; font-size: 0.85rem;">
-            </div>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Kecamatan</th>
-                            <th>Kepadatan (jiwa/km²)</th>
-                            <th>Jumlah Siswa</th>
-                            <th>Status Kepadatan</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body">
-                        <!-- Diisi oleh JS -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-
-    <!-- TENTANG SAYA SECTION -->
-    <section id="tentang" class="section">
-        <h2 class="section-title"><span class="icon">👨‍💻</span> Tentang Pengembang</h2>
-        <p class="section-desc">Informasi mengenai pembuat dan pengembang platform Sistem Informasi Geografis ini.</p>
-        
-        <div class="about-grid">
-            <div class="about-card">
-                <h3>Profil Akademik</h3>
-                <div class="profile-info">
-                    <div class="info-row">
-                        <span class="info-label">Nama Lengkap</span>
-                        <span class="info-value">Muhamad Luthfi Abdullah</span>
+        <!-- ===== PENDAHULUAN & METODOLOGI ===== -->
+        <section id="pendahuluan" class="section-wrapper">
+            <div class="section-header">
+                <div>
+                    <div class="section-tag-group">
+                        <span class="section-number">01</span>
+                        <span class="section-category">Kajian Akademik</span>
                     </div>
-                    <div class="info-row">
-                        <span class="info-label">Program Studi</span>
-                        <span class="info-value">Informatika</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Perguruan Tinggi</span>
-                        <span class="info-value">Universitas PGRI Semarang</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Asal Daerah</span>
-                        <span class="info-value">Desa Sumublor, Sragi, Pekalongan</span>
-                    </div>
+                    <h3 class="section-title"><i class="fa-solid fa-book-open"></i> Pendahuluan & Metodologi</h3>
+                    <p class="section-desc">Latar belakang penelitian spasial, identifikasi permasalahan, sumber data, dan tahapan analisis menggunakan QGIS.</p>
                 </div>
             </div>
 
-            <div class="about-card">
-                <h3>Teknologi & Metodologi</h3>
-                <p>Website ini dibangun menggunakan pendekatan <em>Client-Side Rendering</em> murni yang mengintegrasikan pengolahan spasial desktop dengan web modern:</p>
-                <ul>
-                    <li><strong>QGIS 2.18.18 & qgis2web:</strong> Pengolahan data shp dan ekspor Web Map (OpenLayers).</li>
-                    <li><strong>HTML5, CSS3, JavaScript (ES6):</strong> Struktur antarmuka responsif dengan tema <em>Dark Academic</em>.</li>
-                    <li><strong>Chart.js:</strong> Visualisasi grafik statistik interaktif (Bar & Doughnut).</li>
-                    <li><strong>Data BPS 2024:</strong> Basis data kependudukan dan pendidikan Kabupaten Pekalongan.</li>
-                </ul>
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-title-box">
+                        <div class="card-title-icon"><i class="fa-solid fa-scroll"></i></div>
+                        <h4>Latar Belakang</h4>
+                    </div>
+                    <div style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;">
+                        <p style="margin-bottom: 14px;">Kabupaten Pekalongan dengan 19 kecamatan memiliki karakteristik geografis yang beragam, membentang dari dataran tinggi pegunungan di selatan (Petungkriyono, Lebakbarang) hingga pesisir pantai di utara (Wiradesa, Tirto, Wonokerto). Variasi ini memengaruhi konsentrasi penduduk dan kebutuhan fasilitas pendidikan SLTP.</p>
+                        <p>Melalui pemanfaatan <strong style="color:#ffffff;">QGIS 2.18.18</strong>, proyek ini menyajikan peta perbandingan choropleth dua variabel (kepadatan penduduk dan jumlah murid SLTP) dalam satu antarmuka terpadu untuk memudahkan analisis visual.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title-box">
+                        <div class="card-title-icon"><i class="fa-solid fa-diagram-project"></i></div>
+                        <h4>Metodologi Analisis</h4>
+                    </div>
+                    <ul class="academic-list">
+                        <li class="academic-item">
+                            <div class="item-badge-num">1</div>
+                            <div class="item-content"><h5>Pengumpulan Data</h5><p>Shapefile batas kecamatan & statistik BPS 2024.</p></div>
+                        </li>
+                        <li class="academic-item">
+                            <div class="item-badge-num">2</div>
+                            <div class="item-content"><h5>Penggabungan Atribut</h5><p>Table join antara data spasial dan data tabel BPS via WADMKC.</p></div>
+                        </li>
+                        <li class="academic-item">
+                            <div class="item-badge-num">3</div>
+                            <div class="item-content"><h5>Klasifikasi Tematik</h5><p>Natural Breaks (Jenks) menjadi 5 kelas interval bertingkat.</p></div>
+                        </li>
+                        <li class="academic-item">
+                            <div class="item-badge-num">4</div>
+                            <div class="item-content"><h5>Ekspor & WebGIS</h5><p>Mengonversi hasil QGIS ke format OpenLayers interaktif.</p></div>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- FOOTER -->
-    <footer>
-        <p>&copy; 2024 Muhamad Luthfi Abdullah — Sistem Informasi Geografis Kabupaten Pekalongan.</p>
-        <p style="margin-top: 5px;"><a href="https://github.com/Luthfi1006/WEB_GIS" target="_blank">GitHub Repository</a> | Dibuat dengan penuh dedikasi untuk akademis.</p>
-    </footer>
+        <!-- ===== PETA TEMATIK INTERAKTIF ===== -->
+        <section id="peta" class="section-wrapper">
+            <div class="section-header">
+                <div>
+                    <div class="section-tag-group">
+                        <span class="section-number">02</span>
+                        <span class="section-category">Visualisasi Spasial</span>
+                    </div>
+                    <h3 class="section-title"><i class="fa-solid fa-map-location-dot"></i> Peta Tematik Interaktif</h3>
+                    <p class="section-desc">Gunakan panel kontrol di pojok kanan atas peta untuk beralih antara layer Kepadatan Penduduk dan Jumlah Murid SLTP.</p>
+                </div>
+            </div>
 
-    <!-- Main JS -->
+            <div class="map-master-box">
+                <div class="map-control-bar">
+                    <div class="map-status-pill"><span class="indicator-dot"></span> Peta QGIS Aktif — Kabupaten Pekalongan</div>
+                    <div style="font-size: 0.82rem; color: var(--text-muted);"><i class="fa-solid fa-info-circle"></i> Klik pada area kecamatan untuk melihat popup data.</div>
+                </div>
+                <div class="map-frame-holder">
+                    <iframe src="peta_baru/index.html" title="Peta WebGIS Kabupaten Pekalongan" allow="geolocation; fullscreen" loading="lazy"></iframe>
+                </div>
+                <div class="map-footer-guide">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <div>
+                        <strong>Navigasi Peta:</strong> Klik tombol <strong>👥 Kepadatan Penduduk</strong> atau <strong>🎓 Murid SLTP</strong> di pojok kanan atas peta. Scroll untuk zoom, seret untuk pan, dan klik poligon untuk melihat popup informasi.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== DASHBOARD STATISTIK ===== -->
+        <section id="dashboard" class="section-wrapper">
+            <div class="section-header">
+                <div>
+                    <div class="section-tag-group">
+                        <span class="section-number">03</span>
+                        <span class="section-category">Analisis Data</span>
+                    </div>
+                    <h3 class="section-title"><i class="fa-solid fa-chart-pie"></i> Dashboard Statistik Komparatif</h3>
+                    <p class="section-desc">Grafik interaktif komparasi tingkat kepadatan penduduk dengan jumlah peserta didik SLTP per kecamatan.</p>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h4><i class="fa-solid fa-chart-column"></i> Komparasi Murid vs Kepadatan</h4>
+                        <span>Data 2024</span>
+                    </div>
+                    <div class="chart-canvas-box"><canvas id="barChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h4><i class="fa-solid fa-chart-pie"></i> Klasifikasi Wilayah</h4>
+                        <span>3 Kategori</span>
+                    </div>
+                    <div class="chart-canvas-box"><canvas id="doughnutChart"></canvas></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== DATA TABEL ===== -->
+        <section id="tabel" class="section-wrapper">
+            <div class="section-header">
+                <div>
+                    <div class="section-tag-group">
+                        <span class="section-number">04</span>
+                        <span class="section-category">Dataset Resmi</span>
+                    </div>
+                    <h3 class="section-title"><i class="fa-solid fa-table-list"></i> Data Tabulasi 19 Kecamatan</h3>
+                    <p class="section-desc">Rekapitulasi lengkap data kependudukan dan jumlah murid SLTP Kabupaten Pekalongan (2024).</p>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-toolbar">
+                    <div style="font-size: 0.88rem; color: var(--text-secondary);">
+                        <i class="fa-solid fa-database" style="color:var(--primary-light);"></i> Menampilkan 19 kecamatan
+                    </div>
+                    <div class="search-input-box">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="tableSearch" placeholder="Cari kecamatan atau zona...">
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">No</th>
+                                <th>Kecamatan</th>
+                                <th>Zona Wilayah</th>
+                                <th>Kepadatan (jiwa/km²)</th>
+                                <th>Jumlah Siswa SLTP</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== PROFIL PENGEMBANG ===== -->
+        <section id="pengembang" class="section-wrapper">
+            <div class="section-header">
+                <div>
+                    <div class="section-tag-group">
+                        <span class="section-number">05</span>
+                        <span class="section-category">Author & Developer</span>
+                    </div>
+                    <h3 class="section-title"><i class="fa-solid fa-id-badge"></i> Profil Pengembang</h3>
+                    <p class="section-desc">Pengembang dan penyusun platform analisis geospasial.</p>
+                </div>
+            </div>
+
+            <div class="dev-profile-container">
+                <div class="dev-layout">
+                    <div class="dev-avatar-column">
+                        <div class="dev-avatar-box">
+                            👨‍🎓
+                            <div class="dev-badge-status"><i class="fa-solid fa-bolt"></i></div>
+                        </div>
+                        <h4>Muhamad Luthfi Abdullah</h4>
+                        <p>GIS Developer & Student</p>
+                    </div>
+
+                    <div class="dev-info-column">
+                        <h5><i class="fa-solid fa-user-pen" style="margin-right:6px;"></i> Tentang Pengembang</h5>
+                        <p class="dev-bio">
+                            Mahasiswa Program Studi Informatika di <strong style="color:#ffffff;">Universitas PGRI Semarang</strong> yang memiliki ketertarikan mendalam dalam bidang Sistem Informasi Geografis (SIG), analisis spasial kuantitatif, kartografi tematik, serta pengembangan platform WebGIS interaktif modern.
+                        </p>
+
+                        <div class="dev-spec-grid">
+                            <div class="dev-spec-item">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                                <div>
+                                    <span class="dev-spec-label">Program Studi</span>
+                                    <span class="dev-spec-value">Informatika</span>
+                                </div>
+                            </div>
+                            <div class="dev-spec-item">
+                                <i class="fa-solid fa-university"></i>
+                                <div>
+                                    <span class="dev-spec-label">Perguruan Tinggi</span>
+                                    <span class="dev-spec-value">Universitas PGRI Semarang</span>
+                                </div>
+                            </div>
+                            <div class="dev-spec-item">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <div>
+                                    <span class="dev-spec-label">Daerah Asal</span>
+                                    <span class="dev-spec-value">Desa Sumublor, Kec. Sragi</span>
+                                </div>
+                            </div>
+                            <div class="dev-spec-item">
+                                <i class="fa-solid fa-map-pin"></i>
+                                <div>
+                                    <span class="dev-spec-label">Wilayah Penelitian</span>
+                                    <span class="dev-spec-value">Kabupaten Pekalongan</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dev-button-group">
+                            <a href="https://github.com/Luthfi1006/WEB_GIS" target="_blank" class="btn btn-primary">
+                                <i class="fa-brands fa-github"></i> Kunjungi GitHub
+                            </a>
+                            <a href="mailto:luthfiabdullahmuhamad@gmail.com" class="btn btn-secondary">
+                                <i class="fa-solid fa-envelope"></i> Kontak Email
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== FOOTER ===== -->
+        <footer>
+            <p>&copy; 2024 Muhamad Luthfi Abdullah — Sistem Informasi Geografis Kabupaten Pekalongan.</p>
+            <p style="margin-top: 8px; font-size: 0.78rem;">
+                Dibangun menggunakan QGIS 2.18.18, OpenLayers, Chart.js, dan Vanilla HTML5/CSS3.
+            </p>
+        </footer>
+
+    </div>
+
+    <!-- Main JavaScript Logic -->
     <script src="assets/js/app.js"></script>
 </body>
 </html>
