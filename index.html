@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html lang='id'>
+<head>
+    <meta charset='UTF-8'>
+    <title>WebGIS Kabupaten Pekalongan</title>
+    <link rel='stylesheet' href='assets/css/style.css'>
+</head>
+<body>
+    <div class='container'>
+        <header>
+            <h1>Sistem Informasi Geografis Kabupaten Pekalongan</h1>
+            <p>Analisis Kependudukan dan Pendidikan</p>
+        </header>
+
+        <section class='map-container'>
+            <iframe src='Peta/index.html' title='Peta WebGIS'></iframe>
+        </section>
+
+        <section class='chart-container'>
+            <canvas id='myChart'></canvas>
+        </section>
+    </div>
+    <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+    <script src='assets/js/app.js'></script>
+</body>
+</html>
